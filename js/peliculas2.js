@@ -1,6 +1,5 @@
 window.onload = function () {
-    //Productos del catalogo
-    const peliculas = [
+    let peliculas = [
         {
             numero: "1",
             calificacion: 0,
@@ -96,9 +95,12 @@ window.onload = function () {
     let $base = document.querySelector('#base');
 
     let ordenado = [];
+    
 
     function cargarPeliculas() {
+        let contador=10;
         for (let info of peliculas) {
+
             let nodoSeparador = document.createElement('br');
 
             let nodoPelicula = document.createElement('div');
@@ -108,6 +110,10 @@ window.onload = function () {
 
             let nodoPeliculaCardBody = document.createElement('div');
             nodoPeliculaCardBody.classList.add('card-body');
+            
+            let nodoPeliculaRanking = document.createElement('h4');
+            nodoPeliculaRanking.textContent = ("Ranking "+ (contador));
+            nodoPeliculaRanking.classList.add('text-primary');
 
             let nodoPeliculaTitulo = document.createElement('h5');
             nodoPeliculaTitulo.textContent = ((info['numero'])+'.'+(info['titulo'])+'('+(info['duracion'])+')');
@@ -130,6 +136,7 @@ window.onload = function () {
             let nodoPeliculaBr = document.createElement('br');
 
             nodoPeliculaCardBody.appendChild(nodoPeliculaImagen);
+            nodoPeliculaCardBody.appendChild(nodoPeliculaRanking);
             nodoPeliculaCardBody.appendChild(nodoPeliculaTitulo);
             nodoPeliculaCardBody.appendChild(nodoPeliculaParrafo);
             nodoPeliculaCardBody.appendChild(nodoPeliculaBoton);
@@ -138,14 +145,25 @@ window.onload = function () {
 
             base.appendChild(nodoPelicula);
             base.appendChild(nodoSeparador);
+            contador--;
         }
     }
 
     function agregarPuntuacion(){
+        base.innerHTML = '';
         id = parseInt((this.getAttribute('marcador')-1)) ;
         console.log("nombre "+ peliculas[id].titulo);
         peliculas[id].calificacion +=1; 
         console.log("puntuacion "+ peliculas[id].calificacion);
+        peliculas = peliculas.sort((a, b) => {
+            if (a.calificacion < b.calificacion){
+                return 1;
+            }else if (a.calificacion > b.calificacion){
+                return -1;
+            }else{
+                return 0;
+            }
+        });
         cargarPeliculas();
 	}
 
